@@ -19,6 +19,7 @@ import {
   isStringLiteral,
   rawText,
   createTypeCheckFunction,
+  isNextLineEmpty,
 } from "../utils/index.js";
 import { locStart, hasSameLoc } from "../loc.js";
 import { printDecoratorsBeforeExport } from "./decorators.js";
@@ -30,6 +31,9 @@ import { printDeclareToken } from "./misc.js";
 
 function printImportDeclaration(path, options, print) {
   const { node } = path;
+
+  const isNextLineABreakline = isNextLineEmpty(node, { originalText: options.originalText })
+
   /** @type{Doc[]} */
   return [
     "import",
@@ -39,7 +43,7 @@ function printImportDeclaration(path, options, print) {
     printModuleSource(path, options, print),
     printImportAssertions(path, options, print),
     options.semi ? ";" : "",
-    (path.next.type === "ImportDeclaration" || path.isLast) ? "" : hardline
+    (path.next.type === "ImportDeclaration" || path.isLast || isNextLineABreakline) ? "" : hardline
   ];
 }
 

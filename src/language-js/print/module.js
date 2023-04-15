@@ -39,6 +39,7 @@ function printImportDeclaration(path, options, print) {
     printModuleSource(path, options, print),
     printImportAssertions(path, options, print),
     options.semi ? ";" : "",
+    (path.next.type === "ImportDeclaration" || path.isLast) ? "" : hardline
   ];
 }
 
